@@ -1,0 +1,70 @@
+:root {
+    /* color ramp */
+    --c-neutral-950: #0b0b0b;
+    --c-neutral-900: #1d1d1d;
+    --c-neutral-800: #313131;
+    --c-neutral-700: #474747;
+    --c-neutral-600: #5e5e5e;
+    --c-neutral-500: #767676;
+    --c-neutral-400: #909090;
+    --c-neutral-300: #aaa;
+    --c-neutral-200: #c4c4c4;
+    --c-neutral-100: #e0e0e0;
+    --c-neutral-50: #fcfcfc;
+
+    /* accent color */
+    --c-accent-600: #8b1a1a;
+    --c-accent-500: #b91c1c;
+    --c-accent-400: #dc2626;
+
+    /* signal color */
+    --c-error: #ef4444;
+
+    --color-bg: var(--c-neutral-950);
+    --color-surface: var(--c-neutral-900);
+    --color-surface-alt: var(--c-neutral-800);
+    --color-border: var(--c-neutral-700);
+
+    --color-text: var(--c-neutral-100);
+    --color-text-muted: var(--c-neutral-300);
+
+    --color-accent: var(--c-accent-500);
+    --color-accent-hover: var(--c-accent-400);
+    --color-on-accent: var(--c-neutral-50);
+
+    --color-error: var(--c-error);
+
+    /* typo */
+    --font-heading: var(--font-mrs-sheppard), serif;
+    --font-body: var(--font-inter), system-ui, sans-serif;
+
+    /* text sizes */
+    --text-sm: clamp(0.85rem, 0.8 + 0.3vw, 0.95);
+    --text-base: clamp(1rem, 0.95rem + 0.4vw, 1.125rem);
+    --text-lg: clamp(1.25rem, 1.1rem + 0.8vw, 1.5rem);
+    --text-xl: clamp(1.6rem, 1.3rem + 1.6vw, 2.25rem);
+    --text-2xl: clamp(2.2rem, 1.6rem + 3vw, 3.75rem);
+
+    --weight-normal: 400;
+    --weight-bold: 700;
+
+    --leading-tight: 1.15;
+    --leading-body: 1.5;
+
+    /* spacing */
+    --space-xs: 0.5rem;
+    --space-sm: 0.75rem;
+    --space-md: 1rem;
+    --space-lg: 1.5rem;
+    --space-xl: 2.5rem;
+    --space-2xl: 4rem;
+    --space-3xl: 6rem;
+
+    /* layout */
+    --container-max: 72rem;
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 16px;
+
+    --transition: 0.2s ease;
+}

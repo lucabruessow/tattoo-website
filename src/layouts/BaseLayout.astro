@@ -1,2 +1,43 @@
 ---
+import { Font } from "astro:assets";
+import "../styles/global.css";
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const {
+  title,
+  description = "Arne Kellermann – Custom Designs und Beratung",
+} = Astro.props;
 ---
+
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href={`${import.meta.env.BASE_URL}favicon.svg`}
+    />
+
+    <Font cssVariable="--font-mrs-sheppard" preload />
+    <Font cssVariable="--font-inter" />
+  </head>
+
+  <body>
+    <!-- <Header /> – einbinden, sobald gebaut -->
+    <main>
+      <slot />
+    </main>
+    <!-- <Footer /> – einbinden, sobald gebaut -->
+  </body>
+</html>
