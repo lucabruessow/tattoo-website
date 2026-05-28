@@ -1,0 +1,21 @@
+---
+interface Props {
+  stickyColor: string;
+  transparency?: string;
+} 
+
+const { stickyColor,
+    transparency = "100%",
+ } = Astro.props;
+---
+<div class="sticky"></div>
+
+<style define:vars={{ stickyColor, transparency }}>
+    .sticky {
+        position: sticky;
+        top: 0px;
+        height: var(--header-height);
+        background-color: color-mix(in srgb, var(--stickyColor) var(--transparency), transparent);
+        backdrop-filter: blur(3px); 
+    }
+</style>
