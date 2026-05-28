@@ -1,0 +1,123 @@
+---
+---
+<header class="main-header">
+    <nav id="nav" class="main-nav">
+
+        <a href="/#hero" class="brand">Arne Kellermann</a>
+
+        <ul class="nav-links">
+            <li class="nav-item"><a href="/#about" class="nav-link about">About</a></li>
+            <li class="nav-item"><a href="/#portfolio" class="nav-link portfolio">Portfolio</a></li>
+            <li class="nav-item"><a href="/#faq" class="nav-link faq">FAQ</a></li>
+            <li class="nav-item"><a href="/#contact" class="nav-link contact">Contact</a></li>
+        </ul>
+
+        <button class="burger-menu" aria-label="Menü" aria-expanded="false">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </nav>
+</header>
+
+<script>
+    const burger = document.querySelector(".burger-menu");
+    const links = document.querySelector(".nav-links");
+
+    burger?.addEventListener("click", () => {
+        burger?.classList.toggle("menu-open");
+        links?.classList.toggle("menu-open");
+    })
+</script>
+
+<style>
+    .main-header {
+        position: fixed;
+        z-index: 1001;
+        width: 100%;
+        height: var(--header-height);
+        box-sizing: border-box;
+        background-color: transparent;
+    }
+
+    .brand {
+        font-family: var(--font-heading);
+        font-size: var(--text-lg);
+    }
+
+    ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        background-color: var(--color-overlay-dark);
+    }
+
+    .main-nav {
+        height: var(--header-height);
+        display: flex;
+        justify-content: space-between;
+        padding: var(--space-sm);
+        align-items: center;
+    }
+
+    .nav-links {
+        display: flex;
+        justify-content: space-between;
+        gap: var(--space-sm);
+    }
+
+    .burger-menu {
+        background-color: var(--color-overlay-dark);
+        display: block;
+        border: 1px solid var(--c-neutral-950);
+        border-radius: var(--radius-sm);
+        padding: var(--space-xs);
+        cursor: pointer;
+        z-index: 1001;
+    }
+
+    .burger-menu span {
+        display: block;
+        width: 28px;
+        height: 3px;
+        margin: 5px 0;
+        background: currentColor;
+        border-radius: var(--radius-sm);
+        transition: var(--transition);
+    }
+
+    .burger-menu.menu-open span:nth-child(2) {
+        opacity: 0;
+        visibility: hidden;
+    }
+    .burger-menu.menu-open span:nth-child(1) {
+        transform: translateY(8px) rotate(45deg);
+    }
+    .burger-menu.menu-open span:nth-child(3) {
+        transform: translateY(-8px) rotate(-45deg);
+    }
+
+    .nav-links {
+        position: fixed;
+        top: 70px;
+        visibility: hidden;
+        opacity: 0;
+        flex-direction: column;
+        background-color: white;
+        width: 90%;
+        text-align: center;
+        transition: var(--transition);
+        border-radius: var(--radius-md);
+        z-index: 1001;
+    }
+
+    .nav-item {
+        margin: var(--space-sm) 0;
+
+    }
+
+    .nav-links.menu-open {
+        visibility: visible;
+        opacity: 1;
+    }
+</style>

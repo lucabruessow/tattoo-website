@@ -20,6 +20,7 @@
     /* signal color */
     --c-error: #ef4444;
 
+    /* semantic colors */
     --color-bg: var(--c-neutral-950);
     --color-surface: var(--c-neutral-900);
     --color-surface-alt: var(--c-neutral-800);
@@ -27,6 +28,8 @@
 
     --color-text: var(--c-neutral-100);
     --color-text-muted: var(--c-neutral-300);
+
+    --color-overlay-dark: color-mix(in srgb, var(--c-neutral-950) 60%, transparent);
 
     --color-accent: var(--c-accent-500);
     --color-accent-hover: var(--c-accent-400);
@@ -61,10 +64,12 @@
     --space-3xl: 6rem;
 
     /* layout */
+    --header-height: 4rem;
     --container-max: 72rem;
     --radius-sm: 4px;
     --radius-md: 8px;
     --radius-lg: 16px;
 
     --transition: 0.2s ease;
+    --transition-slow: 0.3s ease;
 }
