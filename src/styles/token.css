@@ -29,7 +29,7 @@
     --color-text: var(--c-neutral-100);
     --color-text-muted: var(--c-neutral-300);
 
-    --color-overlay-dark: color-mix(in srgb, var(--c-neutral-950) 60%, transparent);
+    --color-overlay-dark: color-mix(in srgb, var(--c-neutral-950) 90%, transparent);
 
     --color-accent: var(--c-accent-500);
     --color-accent-hover: var(--c-accent-400);
@@ -38,7 +38,7 @@
     --color-error: var(--c-error);
 
     /* typo */
-    --font-heading: var(--font-mrs-sheppard), serif;
+    --font-heading: var(--font-nunito), serif;
     --font-body: var(--font-inter), system-ui, sans-serif;
 
     /* text sizes */
@@ -64,7 +64,7 @@
     --space-3xl: 6rem;
 
     /* layout */
-    --header-height: 4rem;
+    --header-height: 5rem;
     --container-max: 72rem;
     --radius-sm: 4px;
     --radius-md: 8px;

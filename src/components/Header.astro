@@ -3,7 +3,7 @@
 <header class="main-header">
     <nav id="nav" class="main-nav">
 
-        <a href="/#hero" class="brand">Arne Kellermann</a>
+        <a href="tattoo-website/#hero" class="brand">Arne Kellermann</a>
 
         <ul class="nav-links">
             <li class="nav-item"><a href="/#about" class="nav-link about">About</a></li>
@@ -43,6 +43,9 @@
     .brand {
         font-family: var(--font-heading);
         font-size: var(--text-lg);
+        font-weight: var(--weight-bold);
+        color: var(--color-text);
+        z-index: 1001;
     }
 
     ul {
@@ -56,8 +59,9 @@
         height: var(--header-height);
         display: flex;
         justify-content: space-between;
-        padding: var(--space-sm);
+        padding: 0 var(--space-md);
         align-items: center;
+        border: none;
     }
 
     .nav-links {
@@ -67,10 +71,9 @@
     }
 
     .burger-menu {
-        background-color: var(--color-overlay-dark);
+        background-color: transparent;
         display: block;
-        border: 1px solid var(--c-neutral-950);
-        border-radius: var(--radius-sm);
+        border: none;
         padding: var(--space-xs);
         cursor: pointer;
         z-index: 1001;
@@ -81,8 +84,8 @@
         width: 28px;
         height: 3px;
         margin: 5px 0;
-        background: currentColor;
-        border-radius: var(--radius-sm);
+        background: var(--color-text);
+        border: none;
         transition: var(--transition);
     }
 
@@ -99,21 +102,23 @@
 
     .nav-links {
         position: fixed;
-        top: 70px;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: var(--space-lg);
+
+        background-color: var(--color-overlay-dark);
+
         visibility: hidden;
         opacity: 0;
-        flex-direction: column;
-        background-color: white;
-        width: 90%;
-        text-align: center;
         transition: var(--transition);
-        border-radius: var(--radius-md);
-        z-index: 1001;
+        z-index: 1000;
     }
 
     .nav-item {
         margin: var(--space-sm) 0;
-
     }
 
     .nav-links.menu-open {

@@ -22,14 +22,14 @@ export default defineConfig({
         },
         {
             provider: fontProviders.local(),
-            name: "Mrs Sheppards",
-            cssVariable: "--font-mrs-sheppard",
+            name: "Nunito",
+            cssVariable: "--font-nunito",
             options: {
                 variants: [
                     {
-                        weight: "400",
+                        weight: "100 900",
                         style: "normal",
-                        src: ["./src/assets/fonts/MrsSheppards-Regular.woff2"]
+                        src: ["./src/assets/fonts/Nunito-VariableFont_wght.woff2"]
                     }
                 ]
             }
