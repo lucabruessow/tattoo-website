@@ -1,0 +1,15 @@
+---
+---
+<p class="eyebrow"><slot /></p>
+
+<style>
+    .eyebrow {
+        font-size: var(--text-sm);
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: var(--color-accent);
+    }
+
+    .eyebrow::before { content: "- "; }
+    .eyebrow::after  { content: " -"; }
+</style>

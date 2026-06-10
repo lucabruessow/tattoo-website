@@ -1,4 +1,6 @@
 ---
+import Eyebrow from "../ui/Eyebrow.astro";
+
 const base = import.meta.env.BASE_URL;
 const portraitSrc = `${base}/images/arne-portrait-platzhalter.jpg`;
 ---
@@ -16,7 +18,7 @@ const portraitSrc = `${base}/images/arne-portrait-platzhalter.jpg`;
         </div>
 
         <div class="about_text">
-            <p class="about_eyebrow">- Über mich - </p>
+            <Eyebrow>Über mich</Eyebrow>
             <h2 class="about_title">Custom Tattoos in entspannter Atmosphäre</h2>
 
             <p class="about_lead">
@@ -65,13 +67,6 @@ const portraitSrc = `${base}/images/arne-portrait-platzhalter.jpg`;
         flex-direction: column;
         gap: var(--space-md);
         color: var(--color-text-muted);
-    }
-
-    .about_eyebrow {
-        font-size: var(--text-sm);
-        text-transform: uppercase;
-        letter-spacing: 0.1em;
-        color: var(--color-accent);
     }
 
     .about_title {
