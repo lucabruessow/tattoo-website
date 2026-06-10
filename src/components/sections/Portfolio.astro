@@ -1,4 +1,79 @@
-<div>
-    <p>Hier entsteht</p>
-    <h1>Portfolio</h1>
-</div>
+---
+import Eyebrow from "../ui/Eyebrow.astro";
+
+const tattoos = [
+    { alt: "Placeholder 1" },
+    { alt: "Placeholder 2" },
+    { alt: "Placeholder 3" },
+    { alt: "Placeholder 4" },
+    { alt: "Placeholder 5" },
+    { alt: "Placeholder 6" },
+];
+---
+
+<section id="portfolio" class="portfolio">
+    <div class="portfolio_inner">
+        <Eyebrow>Portfolio</Eyebrow>
+
+        <h2 class="portfolio_title">Mach' dir selbst ein Bild</h2>
+        <ul class="portfolio_grid">
+            {tattoos.map((tattoo) => (
+                <li class="portfolio_item">
+                    <span class="portfolio_placeholder">{tattoo.alt}</span>
+                </li>
+            ))}
+        </ul>
+    </div>
+</section>
+
+<style>
+    .portfolio {
+        padding-block: var(--space-3xl);
+        scroll-margin-top: var(--header-height);
+    }
+
+    .portfolio_inner {
+        max-width: var(--container-max);
+        margin-inline: auto;
+        padding-inline: var(--space-md);
+    }
+
+    .portfolio_title {
+        margin-top: var(--space-md);
+        font-size: var(--text-2xl);
+    }
+
+    .portfolio_grid {
+        list-style: none;
+        padding: 0;
+        margin-top: var(--space-xl);
+
+        display: grid;
+        gap: var(--space-md);
+        grid-template-columns: repeat(2, 1fr);   /* Handy: 2 Spalten */
+    }
+
+    @media (min-width: 48rem) {
+        .portfolio_grid {
+            grid-template-columns: repeat(3, 1fr);   /* ab Tablet: 3 */
+        }
+    }
+
+    .portfolio_item {
+        aspect-ratio: 1 / 1;     /* quadratische Kacheln */
+        border-radius: var(--radius-md);
+        overflow: hidden;        /* schneidet alles am abgerundeten Rand ab */
+    }
+
+    /* Nur für die Platzhalter – fliegt raus, sobald echte Bilder da sind */
+    .portfolio_placeholder {
+        display: grid;
+        place-items: center;
+        width: 100%;
+        height: 100%;
+        padding: var(--space-sm);
+        text-align: center;
+        color: var(--color-text-muted);
+        background-color: var(--color-surface-alt);
+    }
+</style>
