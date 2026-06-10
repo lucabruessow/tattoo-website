@@ -62,6 +62,12 @@ body {
     line-height: var(--leading-body);
 }
 
+main {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3xl);
+}
+
 h1, h2, h3, h4 {
     font-family: var(--font-heading);
     line-height: var(--leading-tight);
