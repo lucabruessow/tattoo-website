@@ -30,6 +30,7 @@
     --color-text-muted: var(--c-neutral-300);
 
     --color-overlay-dark: color-mix(in srgb, var(--c-neutral-950) 95%, transparent);
+    --color-frosted: color-mix(in srgb, var(--c-neutral-100) 20%, transparent);
 
     --color-accent: var(--c-accent-500);
     --color-accent-hover: var(--c-accent-400);
