@@ -43,7 +43,7 @@
     --font-body: var(--font-inter), system-ui, sans-serif;
 
     /* text sizes */
-    --text-sm: clamp(0.85rem, 0.8 + 0.3vw, 0.95);
+    --text-sm: clamp(0.85rem, 0.8rem + 0.3vw, 0.95);
     --text-base: clamp(1rem, 0.95rem + 0.4vw, 1.125rem);
     --text-lg: clamp(1.25rem, 1.1rem + 0.8vw, 1.5rem);
     --text-xl: clamp(1.6rem, 1.3rem + 1.6vw, 2.25rem);
