@@ -93,3 +93,18 @@ a:hover {
     background-color: var(--color-accent);
     color: var(--color-on-accent)
 }
+
+/* Heller Farbkontext – auf jede Section anwendbar, die hell sein soll */
+.theme-light {
+    --color-bg:          var(--c-neutral-50);
+    --color-surface:     var(--c-neutral-100);
+    --color-surface-alt: var(--c-neutral-200);
+    --color-border:      var(--c-neutral-300);
+    --color-text:        var(--c-neutral-900);
+    --color-text-muted:  var(--c-neutral-600);
+
+    background-color: var(--color-bg);
+    color: var(--color-text);
+
+    padding-block: var(--space-3xl);   /* gehört dazu: eigener Hintergrund braucht Innen-Padding */
+}
