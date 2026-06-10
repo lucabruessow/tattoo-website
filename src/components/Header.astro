@@ -3,7 +3,7 @@
 <header class="main-header">
     <nav id="nav" class="main-nav">
 
-        <a href="tattoo-website/#hero" class="brand">Arne Kellermann</a>
+        <a href="tattoo-website/#hero" class="brand"></a>
 
         <ul class="nav-links">
             <li class="nav-item"><a href="/#about" class="nav-link about">About</a></li>
@@ -23,11 +23,30 @@
 <script>
     const burger = document.querySelector(".burger-menu");
     const links = document.querySelector(".nav-links");
+    const header = document.querySelector(".main-header");
+
 
     burger?.addEventListener("click", () => {
         burger?.classList.toggle("menu-open");
         links?.classList.toggle("menu-open");
     })
+
+    let lastY = window.scrollY;
+
+    window.addEventListener("scroll", () => {
+        if (links?.classList.contains("menu-open")) return;  // Menü offen → nichts tun
+
+        const currentY = window.scrollY;
+
+        if (currentY > lastY && currentY > 100) {
+            header?.classList.add("is-hidden");      // runter → weg
+        } else if (currentY < lastY) {
+            header?.classList.remove("is-hidden");   // hoch → zeigen
+        }
+
+        lastY = currentY;
+    }, { passive: true });
+
 </script>
 
 <style>
@@ -38,6 +57,12 @@
         height: var(--header-height);
         box-sizing: border-box;
         background-color: transparent;
+        transition: var(--transition-slow);
+    }
+
+    .main-header.is-hidden {
+        transform: translateY(-100%)
+    }
 
     .brand {
         font-family: var(--font-heading);
