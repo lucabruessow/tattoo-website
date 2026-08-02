@@ -2,12 +2,12 @@
 import Eyebrow from "../ui/Eyebrow.astro";
 
 const tattoos = [
-    { alt: "Placeholder 1" },
-    { alt: "Placeholder 2" },
-    { alt: "Placeholder 3" },
-    { alt: "Placeholder 4" },
-    { alt: "Placeholder 5" },
-    { alt: "Placeholder 6" },
+    { alt: "Placeholder 1", size: "large" },
+    { alt: "Placeholder 2", size: "small" },
+    { alt: "Placeholder 3", size: "small" },
+    { alt: "Placeholder 4", size: "large" },
+    { alt: "Placeholder 5", size: "small" },
+    { alt: "Placeholder 6", size: "small" },
 ];
 ---
 
@@ -18,7 +18,7 @@ const tattoos = [
         <h2 class="portfolio_title">Mach' dir selbst ein Bild</h2>
         <ul class="portfolio_grid">
             {tattoos.map((tattoo) => (
-                <li class="portfolio_item">
+                <li class={`portfolio_item portfolio_item--${tattoo.size}`}>
                     <span class="portfolio_placeholder">{tattoo.alt}</span>
                 </li>
             ))}
@@ -48,20 +48,20 @@ const tattoos = [
         margin-top: var(--space-xl);
 
         display: grid;
-        gap: var(--space-md);
         grid-template-columns: repeat(2, 1fr);   /* Handy: 2 Spalten */
-    }
 
-    @media (min-width: 48rem) {
-        .portfolio_grid {
-            grid-template-columns: repeat(3, 1fr);   /* ab Tablet: 3 */
-        }
-    }
+
+        gap: 3px;
+}
 
     .portfolio_item {
-        aspect-ratio: 1 / 1;     /* quadratische Kacheln */
-        border-radius: var(--radius-md);
-        overflow: hidden;        /* schneidet alles am abgerundeten Rand ab */
+        min-width: 0;
+        aspect-ratio: 1 / 1.3;     /* quadratische Kacheln */
+    }
+
+    .portfolio_item--large {
+        grid-column: 1 / -1;
+        aspect-ratio: 1 / 1.3;
     }
 
     /* Nur für die Platzhalter – fliegt raus, sobald echte Bilder da sind */
