@@ -1,30 +1,64 @@
 ---
+import { Image } from "astro:assets";
 import Eyebrow from "../ui/Eyebrow.astro";
+import Button from "../ui/Button.astro";
+import Lightbox from "../ui/Lightbox.astro";
+import { getCategory } from "../../lib/portfolio";
 
-const tattoos = [
-    { alt: "Placeholder 1", size: "large" },
-    { alt: "Placeholder 2", size: "small" },
-    { alt: "Placeholder 3", size: "small" },
-    { alt: "Placeholder 4", size: "large" },
-    { alt: "Placeholder 5", size: "small" },
-    { alt: "Placeholder 6", size: "small" },
+const categories = [
+    getCategory("tierdesigns", "Tierdesigns"),
+    getCategory("surrealismus", "Surrealismus"),
 ];
 ---
 
 <section id="portfolio" class="portfolio theme-light">
     <div class="portfolio_inner">
         <Eyebrow>Portfolio</Eyebrow>
-
         <h2 class="portfolio_title">Mach' dir selbst ein Bild</h2>
+
         <ul class="portfolio_grid">
-            {tattoos.map((tattoo) => (
-                <li class={`portfolio_item portfolio_item--${tattoo.size}`}>
-                    <span class="portfolio_placeholder">{tattoo.alt}</span>
+            {categories.map((category) => (
+                <li>
+                    <button
+                        type="button"
+                        class="portfolio_card"
+                        data-lightbox-open={`lightbox-${category.slug}`}
+                        aria-haspopup="dialog"
+                    >
+                        <span class="portfolio_cardMedia">
+                            {category.cover && (
+                                <Image
+                                    src={category.cover}
+                                    alt=""
+                                    widths={[480, 800, 1200]}
+                                    sizes="(min-width: 48rem) 50vw, 100vw"
+                                />
+                            )}
+                        </span>
+
+                        <span class="portfolio_cardBody">
+                            <span class="portfolio_cardTitle">{category.title}</span>
+
+                            <span class="portfolio_cardHint">
+                                <Button as="span">
+                                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                                        <rect x="3" y="5" width="14" height="14" rx="2" />
+                                        <path d="M21 8v11a2 2 0 0 1-2 2H8" />
+                                    </svg>
+                                    {category.images.length} Bilder ansehen
+                                </Button>
+                            </span>
+                        </span>
+                    </button>
                 </li>
             ))}
         </ul>
     </div>
 </section>
+
+{categories.map((category) => (
+    <Lightbox id={`lightbox-${category.slug}`} title={category.title} images={category.images} />
+))}
 
 <style>
     .portfolio {
@@ -44,35 +78,109 @@ const tattoos = [
 
     .portfolio_grid {
         list-style: none;
+        margin: var(--space-xl) 0 0;
         padding: 0;
-        margin-top: var(--space-xl);
-
         display: grid;
-        grid-template-columns: repeat(2, 1fr);   /* Handy: 2 Spalten */
-
-
-        gap: 3px;
-}
-
-    .portfolio_item {
-        min-width: 0;
-        aspect-ratio: 1 / 1.3;     /* quadratische Kacheln */
+        grid-template-columns: 1fr;      /* Handy: untereinander */
+        gap: var(--space-md);
     }
 
-    .portfolio_item--large {
-        grid-column: 1 / -1;
-        aspect-ratio: 1 / 1.3;
+    @media (min-width: 48rem) {
+        .portfolio_grid {
+            grid-template-columns: repeat(2, 1fr);   /* ab Tablet: nebeneinander */
+            gap: var(--space-lg);
+        }
     }
 
-    /* Nur für die Platzhalter – fliegt raus, sobald echte Bilder da sind */
-    .portfolio_placeholder {
-        display: grid;
-        place-items: center;
-        width: 100%;
-        height: 100%;
-        padding: var(--space-sm);
-        text-align: center;
-        color: var(--color-text-muted);
+    .portfolio_card {
+        position: relative;
+        display: block;
+        inline-size: 100%;
+        aspect-ratio: 4 / 5;
+        padding: 0;
+        border: 0;
+        border-radius: var(--radius-md);
+        overflow: hidden;
+        cursor: pointer;
         background-color: var(--color-surface-alt);
+        color: var(--c-neutral-50);
+    }
+
+    /* Farbverlauf, damit die Schrift auf jedem Bild lesbar bleibt */
+    .portfolio_card::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(to top, rgb(0 0 0 / 0.75) 0%, rgb(0 0 0 / 0.1) 55%);
+    }
+
+    .portfolio_cardMedia {
+        position: absolute;
+        inset: 0;
+        display: block;
+        background-color: var(--color-surface-alt);
+    }
+
+    /* :global, weil das <img> von der Image-Komponente erzeugt wird */
+    .portfolio_cardMedia :global(img) {
+        inline-size: 100%;
+        block-size: 100%;
+        object-fit: cover;
+        object-position: center;
+        transition: scale var(--transition-slow);
+    }
+
+    .portfolio_cardBody {
+        position: absolute;
+        inset-inline: 0;
+        inset-block-end: 0;
+        z-index: 1;
+        display: grid;
+        gap: var(--space-xs);
+        padding: var(--space-lg) var(--space-md);
+        text-align: left;
+    }
+
+    .portfolio_cardTitle {
+        font-family: var(--font-heading);
+        font-size: var(--text-xl);
+        font-weight: var(--weight-bold);
+        line-height: var(--leading-tight);
+    }
+
+    /* Nur Positionierung - Rundung, Blur und Farbe kommen aus Button.astro */
+    .portfolio_cardHint {
+        justify-self: start;
+        font-size: var(--text-sm);
+    }
+
+    .portfolio_cardHint svg {
+        inline-size: 1em;
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+    }
+
+    /* :global, weil .btn aus der Button-Komponente kommt */
+    .portfolio_card:hover .portfolio_cardHint :global(.btn),
+    .portfolio_card:focus-visible .portfolio_cardHint :global(.btn) {
+        background-color: var(--color-accent);
+    }
+
+    .portfolio_card:hover .portfolio_cardMedia :global(img),
+    .portfolio_card:focus-visible .portfolio_cardMedia :global(img) {
+        scale: 1.05;
+    }
+
+    .portfolio_card:focus-visible {
+        outline: 3px solid var(--color-accent);
+        outline-offset: 3px;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .portfolio_cardMedia :global(img) { transition: none; }
+        .portfolio_card:hover .portfolio_cardMedia :global(img) { scale: 1; }
     }
 </style>

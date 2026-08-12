@@ -1,16 +1,39 @@
 ---
+interface Props {
+    /** "button" = echter Button.
+        "span"  = sieht aus wie ein Button, ist aber keiner.
+        Braucht man, wenn er in einem anderen Button oder Link steckt. */
+    as?: "button" | "span";
+}
+
+const { as = "button" } = Astro.props;
 ---
-<button>Book on Instagram</button>
+
+{as === "span" ? (
+    <span class="btn"><slot>Book on Instagram</slot></span>
+) : (
+    <button type="button" class="btn"><slot>Book on Instagram</slot></button>
+)}
 
 <style>
-    button {
+    .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5em;
+        padding: 0.5em 1em;
+        border-radius: 0.75em;
+        line-height: 1.4;
+        border: 1px solid color-mix(in srgb, var(--c-neutral-50) 25%, transparent);
+
         background-color: var(--color-frosted);
         backdrop-filter: blur(6px);
         color: var(--c-neutral-50);
-        border: 1px var(--color-border);
-        border-radius: var(--radius-lg);
-        padding: var(--space-xs) var(--space-md);
+        white-space: nowrap;
         cursor: pointer;
+        transition: background-color var(--transition);
+    }
+
+    .btn:hover {
+        background-color: var(--color-accent);
     }
 </style>
-

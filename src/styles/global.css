@@ -94,6 +94,12 @@ a:hover {
     color: var(--color-on-accent)
 }
 
+img, picture, video, canvas, svg {
+  display: block;
+  max-width: 100%;
+  height: auto;   /* NEU - verhindert das Quetschen */
+}
+
 /* Heller Farbkontext – auf jede Section anwendbar, die hell sein soll */
 .theme-light {
     --color-bg:          var(--c-neutral-50);

@@ -1,0 +1,305 @@
+---
+import { Image } from "astro:assets";
+import type { PortfolioImage } from "../../lib/portfolio";
+
+interface Props {
+    id: string;
+    title: string;
+    images: PortfolioImage[];
+}
+
+const { id, title, images } = Astro.props;
+---
+
+<dialog id={id} class="lb" aria-label={`${title} – Bildergalerie`}>
+    <div class="lb_bar">
+        <p class="lb_title">{title}</p>
+        <p class="lb_counter" data-lb-counter aria-live="polite">1 / {images.length}</p>
+        <button type="button" class="lb_close" data-lb-close aria-label="Galerie schließen">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6 18 18M18 6 6 18" /></svg>
+        </button>
+    </div>
+
+    <div class="lb_stage">
+        <button type="button" class="lb_nav lb_nav--prev" data-lb-prev aria-label="Vorheriges Bild">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5 8 12l7 7" /></svg>
+        </button>
+
+        <ul class="lb_track" data-lb-track>
+            {images.map((image, i) => (
+                <li class="lb_slide" data-lb-slide>
+                    <Image
+                        src={image.src}
+                        alt={image.alt}
+                        widths={[640, 1024, 1600]}
+                        sizes="100vw"
+                        loading={i === 0 ? "eager" : "lazy"}
+                    />
+                </li>
+            ))}
+        </ul>
+
+        <button type="button" class="lb_nav lb_nav--next" data-lb-next aria-label="Nächstes Bild">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7" /></svg>
+        </button>
+    </div>
+
+    <div class="lb_dots">
+        {images.map((image, i) => (
+            <button type="button" class="lb_dot" data-lb-dot aria-label={`Bild ${i + 1}: ${image.alt}`} />
+        ))}
+    </div>
+</dialog>
+
+<style>
+    /* Wichtig: nur [open] bekommt display, sonst überschreiben wir
+       die Browser-Regel dialog:not([open]) { display: none } */
+    .lb[open] {
+        display: grid;
+        grid-template-rows: auto 1fr auto;
+    }
+
+    .lb {
+        position: fixed;
+        inset: 0;
+        width: 100%;
+        max-width: 100%;
+        height: 100%;
+        max-height: 100%;
+        margin: 0;
+        padding: 0;
+        border: 0;
+        overflow: hidden;
+        background-color: var(--color-overlay-dark);
+        color: var(--c-neutral-100);
+    }
+
+    .lb::backdrop {
+        background-color: rgb(0 0 0 / 0.8);
+    }
+
+    .lb_bar {
+        display: flex;
+        align-items: center;
+        gap: var(--space-md);
+        padding: var(--space-sm) var(--space-md);
+    }
+
+    .lb_title {
+        margin: 0;
+        font-family: var(--font-heading);
+        font-size: var(--text-lg);
+    }
+
+    .lb_counter {
+        margin: 0;
+        margin-inline-start: auto;
+        font-size: var(--text-sm);
+        color: var(--c-neutral-300);
+        font-variant-numeric: tabular-nums;
+    }
+
+    .lb_close,
+    .lb_nav,
+    .lb_dot {
+        border: 0;
+        background: none;
+        color: inherit;
+        cursor: pointer;
+        padding: 0;
+    }
+
+    .lb_close,
+    .lb_nav {
+        display: grid;
+        place-items: center;
+        inline-size: 2.75rem;
+        block-size: 2.75rem;
+        border-radius: 50%;
+        background-color: var(--color-frosted);
+        transition: background-color var(--transition);
+    }
+
+    .lb_close:hover,
+    .lb_nav:not(:disabled):hover {
+        background-color: var(--color-accent);
+    }
+
+    .lb_nav:disabled {
+        opacity: 0.3;
+        cursor: default;
+    }
+
+    .lb_close svg,
+    .lb_nav svg {
+        inline-size: 1.25rem;
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+    }
+
+    .lb_stage {
+        position: relative;
+        min-height: 0;   /* damit 1fr im Grid wirklich schrumpfen darf */
+    }
+
+    .lb_nav {
+        position: absolute;
+        top: 50%;
+        translate: 0 -50%;
+        z-index: 1;
+    }
+
+    .lb_nav--prev { left: var(--space-xs); }
+    .lb_nav--next { right: var(--space-xs); }
+
+    .lb_track {
+        display: flex;
+        position: relative;
+        block-size: 100%;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        overflow-x: auto;
+        overscroll-behavior-x: contain;
+        scroll-snap-type: x mandatory;
+        scrollbar-width: none;
+    }
+
+    .lb_track::-webkit-scrollbar { display: none; }
+
+    .lb_slide {
+        flex: 0 0 100%;
+        block-size: 100%;
+        display: grid;
+        place-items: center;
+        padding: var(--space-sm) var(--space-xl);
+        scroll-snap-align: center;
+    }
+
+    /* :global, weil das <img> von der Image-Komponente erzeugt wird */
+    .lb_slide :global(img) {
+        max-inline-size: 100%;
+        max-block-size: 100%;
+        inline-size: auto;
+        block-size: auto;
+        object-fit: contain;
+        border-radius: var(--radius-sm);
+    }
+
+    .lb_dots {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: var(--space-xs);
+        padding: var(--space-md);
+    }
+
+    .lb_dot {
+        inline-size: 0.6rem;
+        block-size: 0.6rem;
+        border-radius: 50%;
+        background-color: var(--c-neutral-600);
+        transition: background-color var(--transition), scale var(--transition);
+    }
+
+    .lb_dot[aria-current="true"] {
+        background-color: var(--color-accent);
+        scale: 1.35;
+    }
+
+    :where(.lb_close, .lb_nav, .lb_dot):focus-visible {
+        outline: 2px solid var(--color-accent);
+        outline-offset: 3px;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .lb_track { scroll-behavior: auto; }
+    }
+</style>
+
+<style is:global>
+    body.has-lightbox { overflow: hidden; }
+</style>
+
+<script>
+    // Öffnen: Delegation, damit die Reihenfolge im DOM egal ist
+    document.addEventListener("click", (event) => {
+        const opener = (event.target as HTMLElement).closest<HTMLElement>("[data-lightbox-open]");
+        if (!opener) return;
+
+        const dialog = document.getElementById(opener.dataset.lightboxOpen ?? "");
+        if (!(dialog instanceof HTMLDialogElement)) return;
+
+        dialog.showModal();
+        dialog.dispatchEvent(new CustomEvent("lb:open"));
+    });
+
+    document.querySelectorAll<HTMLDialogElement>("dialog.lb").forEach((dialog) => {
+        const track = dialog.querySelector<HTMLElement>("[data-lb-track]");
+        const slides = [...dialog.querySelectorAll<HTMLElement>("[data-lb-slide]")];
+        const dots = [...dialog.querySelectorAll<HTMLButtonElement>("[data-lb-dot]")];
+        const counter = dialog.querySelector<HTMLElement>("[data-lb-counter]");
+        const prev = dialog.querySelector<HTMLButtonElement>("[data-lb-prev]");
+        const next = dialog.querySelector<HTMLButtonElement>("[data-lb-next]");
+        const close = dialog.querySelector<HTMLButtonElement>("[data-lb-close]");
+
+        if (!track || slides.length === 0) return;
+
+        const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+        let index = 0;
+
+        const render = () => {
+            dots.forEach((dot, i) => dot.setAttribute("aria-current", String(i === index)));
+            if (counter) counter.textContent = `${index + 1} / ${slides.length}`;
+            if (prev) prev.disabled = index === 0;
+            if (next) next.disabled = index === slides.length - 1;
+        };
+
+        const goTo = (target: number, behavior: ScrollBehavior = reduceMotion ? "auto" : "smooth") => {
+            index = Math.max(0, Math.min(target, slides.length - 1));
+            track.scrollTo({ left: slides[index].offsetLeft, behavior });
+            render();
+        };
+
+        // Nach dem Wischen den Index nachziehen
+        let scrollTimer: number;
+        track.addEventListener("scroll", () => {
+            clearTimeout(scrollTimer);
+            scrollTimer = window.setTimeout(() => {
+                const current = Math.round(track.scrollLeft / track.clientWidth);
+                if (current !== index) {
+                    index = current;
+                    render();
+                }
+            }, 80);
+        }, { passive: true });
+
+        prev?.addEventListener("click", () => goTo(index - 1));
+        next?.addEventListener("click", () => goTo(index + 1));
+        close?.addEventListener("click", () => dialog.close());
+        dots.forEach((dot, i) => dot.addEventListener("click", () => goTo(i)));
+
+        // Klick auf den Hintergrund schließt
+        dialog.addEventListener("click", (event) => {
+            if (event.target === dialog) dialog.close();
+        });
+
+        // ESC macht der Browser selbst
+        dialog.addEventListener("keydown", (event) => {
+            if (event.key === "ArrowRight") { event.preventDefault(); goTo(index + 1); }
+            if (event.key === "ArrowLeft")  { event.preventDefault(); goTo(index - 1); }
+        });
+
+        dialog.addEventListener("lb:open", () => {
+            document.body.classList.add("has-lightbox");
+            goTo(0, "auto");
+        });
+
+        dialog.addEventListener("close", () => {
+            document.body.classList.remove("has-lightbox");
+        });
+    });
+</script>
