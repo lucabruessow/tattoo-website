@@ -95,6 +95,11 @@
         padding: var(--space-xs);
         cursor: pointer;
         z-index: 1001;
+        transition: scale var(--transition);
+    }
+
+    .burger-menu:hover {
+        scale: 1.1;
     }
 
     .burger-menu span {
@@ -102,9 +107,14 @@
         width: 28px;
         height: 3px;
         margin: 5px 0;
-        background: var(--color-text);
+        background: var(--color-accent);
         border: none;
-        transition: var(--transition);
+        transition: background var(--transition), transform var(--transition);
+        filter: drop-shadow(0 0 3px rgb(0 0 0 / 0.3))
+    }
+
+    .burger-menu:hover span{
+        background: var(--color-accent-hover);
     }
 
     .burger-menu.menu-open span:nth-child(2) {
@@ -142,5 +152,9 @@
     .nav-links.menu-open {
         visibility: visible;
         opacity: 1;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .burger-menu:hover { scale: 1; }
     }
 </style>
