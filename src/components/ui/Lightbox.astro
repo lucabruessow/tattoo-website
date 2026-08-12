@@ -11,18 +11,18 @@ interface Props {
 const { id, title, images } = Astro.props;
 ---
 
-<dialog id={id} class="lb" aria-label={`${title} – Bildergalerie`}>
+<dialog id={id} class="lb" tabindex="-1" aria-label={`${title} – Bildergalerie`}>
     <div class="lb_bar">
         <p class="lb_title">{title}</p>
         <p class="lb_counter" data-lb-counter aria-live="polite">1 / {images.length}</p>
         <button type="button" class="lb_close" data-lb-close aria-label="Galerie schließen">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6 18 18M18 6 6 18" /></svg>
+            <svg viewBox="0 0 28 28" aria-hidden="true"><path d="M4 4 24 24M24 4 4 24" /></svg>
         </button>
     </div>
 
     <div class="lb_stage">
         <button type="button" class="lb_nav lb_nav--prev" data-lb-prev aria-label="Vorheriges Bild">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5 8 12l7 7" /></svg>
+            <svg viewBox="0 0 28 28" aria-hidden="true"><path d="M18 5 9 14l9 9" /></svg>
         </button>
 
         <ul class="lb_track" data-lb-track>
@@ -40,7 +40,7 @@ const { id, title, images } = Astro.props;
         </ul>
 
         <button type="button" class="lb_nav lb_nav--next" data-lb-next aria-label="Nächstes Bild">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7" /></svg>
+            <svg viewBox="0 0 28 28" aria-hidden="true"><path d="M10 5l9 9-9 9" /></svg>
         </button>
     </div>
 
@@ -72,6 +72,13 @@ const { id, title, images } = Astro.props;
         overflow: hidden;
         background-color: var(--color-overlay-dark);
         color: var(--c-neutral-100);
+    }
+
+    /* Der Dialog bekommt beim Öffnen den Fokus, damit kein Button
+       markiert wird - dafür braucht er selbst keinen Rahmen */
+    .lb:focus,
+    .lb:focus-visible {
+        outline: none;
     }
 
     .lb::backdrop {
@@ -109,20 +116,21 @@ const { id, title, images } = Astro.props;
         padding: 0;
     }
 
+    /* Icon-Buttons: keine Fläche, nur das Symbol.
+       Das Padding bleibt als unsichtbare Klickfläche. */
     .lb_close,
     .lb_nav {
         display: grid;
         place-items: center;
-        inline-size: 2.75rem;
-        block-size: 2.75rem;
-        border-radius: 50%;
-        background-color: var(--color-frosted);
-        transition: background-color var(--transition);
+        padding: var(--space-xs);
+        color: var(--color-accent);
+        transition: color var(--transition), scale var(--transition);
     }
 
     .lb_close:hover,
     .lb_nav:not(:disabled):hover {
-        background-color: var(--color-accent);
+        color: var(--color-accent-hover);
+        scale: 1.1;
     }
 
     .lb_nav:disabled {
@@ -132,12 +140,24 @@ const { id, title, images } = Astro.props;
 
     .lb_close svg,
     .lb_nav svg {
-        inline-size: 1.25rem;
         fill: none;
         stroke: currentColor;
+        stroke-width: 3;
+    }
+
+    /* 28px Box mit 3px Strichstärke - dieselben Maße wie die
+       Balken des Burger-/Schließen-Icons in der Navigation */
+    .lb_close svg {
+        inline-size: 1.75rem;
+        block-size: 1.75rem;
+    }
+
+    /* Pfeile doppelt so groß */
+    .lb_nav svg {
+        inline-size: 3.5rem;
+        block-size: 3.5rem;
         stroke-width: 2;
-        stroke-linecap: round;
-        stroke-linejoin: round;
+        filter: drop-shadow(0 0 3px rgb(0 0 0 / 0.6))
     }
 
     .lb_stage {
@@ -152,8 +172,8 @@ const { id, title, images } = Astro.props;
         z-index: 1;
     }
 
-    .lb_nav--prev { left: var(--space-xs); }
-    .lb_nav--next { right: var(--space-xs); }
+    .lb_nav--prev { left: 0; }
+    .lb_nav--next { right: 0; }
 
     .lb_track {
         display: flex;
@@ -170,12 +190,13 @@ const { id, title, images } = Astro.props;
 
     .lb_track::-webkit-scrollbar { display: none; }
 
+    /* schmales Seiten-Padding, damit das Bild unter den Pfeilen durchläuft */
     .lb_slide {
         flex: 0 0 100%;
         block-size: 100%;
         display: grid;
         place-items: center;
-        padding: var(--space-sm) var(--space-xl);
+        padding: var(--space-sm) var(--space-md);
         scroll-snap-align: center;
     }
 
@@ -217,6 +238,7 @@ const { id, title, images } = Astro.props;
 
     @media (prefers-reduced-motion: reduce) {
         .lb_track { scroll-behavior: auto; }
+        .lb_close:hover, .lb_nav:not(:disabled):hover { scale: 1; }
     }
 </style>
 
@@ -296,6 +318,7 @@ const { id, title, images } = Astro.props;
         dialog.addEventListener("lb:open", () => {
             document.body.classList.add("has-lightbox");
             goTo(0, "auto");
+            dialog.focus();   // statt automatisch das X zu fokussieren
         });
 
         dialog.addEventListener("close", () => {
