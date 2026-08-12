@@ -4,9 +4,25 @@ interface Props {
         "span"  = sieht aus wie ein Button, ist aber keiner.
         Braucht man, wenn er in einem anderen Button oder Link steckt. */
     as?: "button" | "span";
+    variant?: "accent" | "frosted"
 }
 
-const { as = "button" } = Astro.props;
+const { as = "button", variant = "accent" } = Astro.props;
+
+const variants = {
+    accent: {
+        btnBg: "var(--color-accent)",
+        btnBgHover: "var(--color-accent-hover)",
+        btnBorder: "1px solid color-mix(in srgb, var(--color-accent) 25%, transparent);"
+    },
+    frosted: {
+        btnBg: "var(--color-frosted)",
+        btnBgHover: "color-mix(in srgb, var(--c-neutral-100) 30%, transparent)",
+        btnBorder: "1px solid color-mix(in srgb, var(--c-neutral-100) 30%, transparent)"
+    }
+}
+
+const btnVars = variants[variant]
 ---
 
 {as === "span" ? (
@@ -15,7 +31,7 @@ const { as = "button" } = Astro.props;
     <button type="button" class="btn"><slot>Book on Instagram</slot></button>
 )}
 
-<style>
+<style define:vars= { btnVars }>
     .btn {
         display: inline-flex;
         align-items: center;
@@ -23,9 +39,8 @@ const { as = "button" } = Astro.props;
         padding: 0.5em 1em;
         border-radius: 0.75em;
         line-height: 1.4;
-        border: 1px solid color-mix(in srgb, var(--c-neutral-50) 25%, transparent);
-
-        background-color: var(--color-frosted);
+        border: var(--btnBorder);
+        background-color: var(--btnBg);
         backdrop-filter: blur(6px);
         color: var(--c-neutral-50);
         white-space: nowrap;
@@ -34,6 +49,6 @@ const { as = "button" } = Astro.props;
     }
 
     .btn:hover {
-        background-color: var(--color-accent);
+        background-color: var(--btnBgHover);
     }
 </style>
