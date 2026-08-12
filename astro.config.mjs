@@ -11,14 +11,15 @@ export default defineConfig({
             name: "Inter",
             cssVariable: "--font-inter",
             options: {
-                variants: [
+                variants : [
                     {
                         weight: "100 900",
                         style: "normal",
-                        src: ["./src/assets/fonts/Inter-Regular.woff2"],
-                    },
-                ],
-            },
+                        src: ["src/assets/fonts/InterVariable.woff2"]
+
+                    }
+                ]
+            }
         },
         {
             provider: fontProviders.local(),
