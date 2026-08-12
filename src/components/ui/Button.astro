@@ -7,7 +7,7 @@ interface Props {
     variant?: "accent" | "frosted"
 }
 
-const { as = "button", variant = "accent" } = Astro.props;
+const { as = "button", variant = "accent" }: Props = Astro.props;
 
 const variants = {
     accent: {
