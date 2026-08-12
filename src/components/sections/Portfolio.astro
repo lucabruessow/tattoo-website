@@ -35,18 +35,11 @@ const categories = [
                                 />
                             )}
                         </span>
-
                         <span class="portfolio_cardBody">
                             <span class="portfolio_cardTitle">{category.title}</span>
 
                             <span class="portfolio_cardHint">
-                                <Button as="span">
-                                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                                        <rect x="3" y="5" width="14" height="14" rx="2" />
-                                        <path d="M21 8v11a2 2 0 0 1-2 2H8" />
-                                    </svg>
-                                    {category.images.length} Bilder ansehen
-                                </Button>
+                                <Button as="span">Bilder ansehen</Button>
                             </span>
                         </span>
                     </button>
@@ -152,15 +145,6 @@ const categories = [
     .portfolio_cardHint {
         justify-self: start;
         font-size: var(--text-sm);
-    }
-
-    .portfolio_cardHint svg {
-        inline-size: 1em;
-        fill: none;
-        stroke: currentColor;
-        stroke-width: 2;
-        stroke-linecap: round;
-        stroke-linejoin: round;
     }
 
     /* :global, weil .btn aus der Button-Komponente kommt */
