@@ -1,21 +1,21 @@
 :root {
     /* color ramp */
-    --c-neutral-950: #0b0b0b;
-    --c-neutral-900: #1d1d1d;
-    --c-neutral-800: #313131;
-    --c-neutral-700: #474747;
-    --c-neutral-600: #5e5e5e;
-    --c-neutral-500: #767676;
-    --c-neutral-400: #909090;
-    --c-neutral-300: #aaa;
-    --c-neutral-200: #c4c4c4;
-    --c-neutral-100: #e0e0e0;
-    --c-neutral-50: #fcfcfc;
+    --c-neutral-950: #333534;
+    --c-neutral-900: #262626;
+    --c-neutral-800: #404040;
+    --c-neutral-700: #595959;
+    --c-neutral-600: #737373;
+    --c-neutral-500: #8c8c8c;
+    --c-neutral-400: #a6a6a6;
+    --c-neutral-300: #CDBAC9;
+    --c-neutral-200: #d9d9d9;
+    --c-neutral-100: #CDBAC9;
+    --c-neutral-50: #ededed;
 
     /* accent color */
-    --c-accent-600: #8b1a1a;
-    --c-accent-500: #b91c1c;
-    --c-accent-400: #dc2626;
+    --c-accent-600: #3A7849;
+    --c-accent-500: #3A7849;
+    --c-accent-400: #3A7849;
 
     /* signal color */
     --c-error: #ef4444;
