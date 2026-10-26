@@ -1,4 +1,14 @@
 :root {
+    /*
+      Palette erstellt mit Arne
+        Anthrazit     #333534  → --c-neutral-950  (Seitenhintergrund)
+        Fast-Schwarz  #262626  → --c-neutral-900
+        Mauve         #CDBAC9  → --c-neutral-100 und -300
+        Off-White     #ededed  → --c-neutral-50
+        Grün          #3A7849  → --c-accent-500
+        Graustufen    #404040 … #d9d9d9 → --c-neutral-800 … -200
+    */
+
     /* color ramp */
     --c-neutral-950: #333534;
     --c-neutral-900: #262626;
@@ -13,9 +23,11 @@
     --c-neutral-50: #ededed;
 
     /* accent color */
-    --c-accent-600: #3A7849;
-    --c-accent-500: #3A7849;
+    --c-accent-300: #579665;
     --c-accent-400: #3A7849;
+    --c-accent-500: #3A7849;
+    --c-accent-600: #3A7849;
+    --c-accent-700: #2c6a3c;
 
     /* signal color */
     --c-error: #ef4444;
@@ -28,9 +40,11 @@
 
     --color-text: var(--c-neutral-100);
     --color-text-muted: var(--c-neutral-300);
+    --color-heading: var(--c-accent-300);
 
     --color-overlay-dark: color-mix(in srgb, var(--c-neutral-950) 95%, transparent);
     --color-frosted: color-mix(in srgb, var(--c-neutral-100) 20%, transparent);
+    --color-shadow: rgb(0 0 0 / 0.15);
 
     --color-accent: var(--c-accent-500);
     --color-accent-hover: var(--c-accent-400);
@@ -63,6 +77,7 @@
     --space-xl: 2.5rem;
     --space-2xl: 4rem;
     --space-3xl: 6rem;
+    --space-section: clamp(6rem, 3rem + 10vw, 14rem);
 
     /* layout */
     --header-height: 5rem;

@@ -1,14 +1,13 @@
 ---
 // src/components/sections/Faq.astro
-import Eyebrow from "../ui/Eyebrow.astro";
+import SectionHeading from "../ui/SectionHeading.astro";
 import { faqs } from "../../data/faq";
 ---
 
-<section id="faq" class="faq">
-  <div class="faq_inner">
-    <Eyebrow>FAQ</Eyebrow>
-    <h2 class="faq_title">Häufige Fragen</h2>
+<section id="faq" class="faq recessed" aria-labelledby="faq-title">
+   <SectionHeading id="faq-title">Häufige Fragen</SectionHeading>
 
+   <div class="faq_inner">
     <ul class="faq_list">
       {faqs.map((faq) => (
         <li>
@@ -25,6 +24,7 @@ import { faqs } from "../../data/faq";
 <style>
     .faq {
     scroll-margin-top: var(--header-height);
+    padding-block-end: var(--space-3xl);
     }
 
     .faq_inner {
@@ -33,15 +33,9 @@ import { faqs } from "../../data/faq";
         padding-inline: var(--space-md);
     }
 
-    .faq_title {
-        margin-top: var(--space-md);
-        font-size: var(--text-2xl);
-    }
-
     .faq_list {
     list-style: none;
     padding: 0;
-    margin-top: var(--space-xl);
     }
 
     summary {

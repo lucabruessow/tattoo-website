@@ -1,6 +1,6 @@
 ---
 import { Image } from "astro:assets";
-import Eyebrow from "../ui/Eyebrow.astro";
+import SectionHeading from "../ui/SectionHeading.astro";
 import Button from "../ui/Button.astro";
 import Lightbox from "../ui/Lightbox.astro";
 import { getCategory } from "../../lib/portfolio";
@@ -11,11 +11,10 @@ const categories = [
 ];
 ---
 
-<section id="portfolio" class="portfolio theme-light">
-    <div class="portfolio_inner">
-        <Eyebrow>Portfolio</Eyebrow>
-        <h2 class="portfolio_title">Mach' dir selbst ein Bild</h2>
+<section id="portfolio" class="portfolio theme-light" aria-labelledby="portfolio-title">
+     <SectionHeading id="portfolio-title">Mach' dir selbst ein Bild</SectionHeading>
 
+     <div class="portfolio_inner">
         <ul class="portfolio_grid">
             {categories.map((category) => (
                 <li>
@@ -56,6 +55,7 @@ const categories = [
 <style>
     .portfolio {
         scroll-margin-top: var(--header-height);
+        padding-block-end: var(--space-3xl);
     }
 
     .portfolio_inner {
@@ -64,14 +64,9 @@ const categories = [
         padding-inline: var(--space-md);
     }
 
-    .portfolio_title {
-        margin-top: var(--space-md);
-        font-size: var(--text-2xl);
-    }
-
     .portfolio_grid {
         list-style: none;
-        margin: var(--space-xl) 0 0;
+        margin: 0;
         padding: 0;
         display: grid;
         grid-template-columns: 1fr;      /* Handy: untereinander */
@@ -96,7 +91,7 @@ const categories = [
         overflow: hidden;
         cursor: pointer;
         background-color: var(--color-surface-alt);
-        color: var(--c-neutral-50);
+        color: var(--c-neutral-300);
     }
 
     /* Farbverlauf, damit die Schrift auf jedem Bild lesbar bleibt */

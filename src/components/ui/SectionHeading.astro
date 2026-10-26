@@ -1,0 +1,25 @@
+---
+interface Props {
+    id: string;
+}
+
+const { id }: Props = Astro.props;
+---
+<div class="section-heading">
+    <h2 id={id} class="section-heading_title"><slot /></h2>
+</div>
+
+<style>
+    .section-heading {
+        padding-block: var(--space-section);
+        padding-inline: var(--space-md);
+        text-align: center;
+    }
+
+    .section-heading_title {
+        max-width: var(--container-max);
+        margin-inline: auto;
+        font-size: var(--text-2xl);
+        color: var(--color-heading);
+    }
+</style>

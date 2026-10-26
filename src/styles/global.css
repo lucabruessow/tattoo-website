@@ -67,14 +67,13 @@ body {
 main {
     display: flex;
     flex-direction: column;
-    gap: var(--space-3xl);
 }
 
 h1, h2, h3, h4 {
     font-family: var(--font-heading);
     line-height: var(--leading-tight);
     text-wrap: balance;
-    color: var(--color-accent);
+    color: var(--color-heading);
 }
 
 a {
@@ -111,9 +110,14 @@ img, picture, video, canvas, svg {
     --color-border:      var(--c-neutral-300);
     --color-text:        var(--c-neutral-900);
     --color-text-muted:  var(--c-neutral-600);
+    --color-heading:     var(--c-accent-700);
 
     background-color: var(--color-bg);
     color: var(--color-text);
+}
 
-    padding-block: var(--space-3xl);   /* gehört dazu: eigener Hintergrund braucht Innen-Padding */
+.recessed {
+    box-shadow:
+        inset 0  1.25rem 1rem -1rem var(--color-shadow),
+        inset 0 -1.25rem 1rem -1rem var(--color-shadow);
 }
