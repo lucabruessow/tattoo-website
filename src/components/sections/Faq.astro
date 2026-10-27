@@ -4,7 +4,7 @@ import SectionHeading from "../ui/SectionHeading.astro";
 import { faqs } from "../../data/faq";
 ---
 
-<section id="faq" class="faq recessed" aria-labelledby="faq-title">
+<section id="faq" class="faq theme-light" aria-labelledby="faq-title">
    <SectionHeading id="faq-title">Häufige Fragen</SectionHeading>
 
    <div class="faq_inner">
@@ -30,7 +30,7 @@ import { faqs } from "../../data/faq";
     .faq_inner {
         max-width: var(--container-max);
         margin-inline: auto;
-        padding-inline: var(--space-md);
+        padding-inline: var(--space-gutter);
     }
 
     .faq_list {
