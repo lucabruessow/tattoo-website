@@ -1,5 +1,6 @@
 ---
 import Button from "../ui/Button.astro";
+import { site } from "../../data/site";
 
 const base = import.meta.env.BASE_URL;
 const videoSrc = `${base}/videos/placeholder-video.mp4`;
@@ -14,7 +15,7 @@ const videoSrc = `${base}/videos/placeholder-video.mp4`;
             <h1 class="hero_title">Arne Kellermann</h1>
             <p class="hero_tagline">Illustrative Tattoos</p>
         </div>
-        <Button variant="frosted"/>
+        <Button variant="frosted" href={site.instagram} />
     </div>
 </section>
 
