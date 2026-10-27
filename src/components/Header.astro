@@ -1,15 +1,25 @@
 ---
+const base = import.meta.env.BASE_URL;
+
+// id = die id der Section, zu der der Link springt
+const navItems = [
+    { id: "about", label: "About" },
+    { id: "portfolio", label: "Portfolio" },
+    { id: "faq", label: "FAQ" },
+    { id: "contact", label: "Contact" },
+];
 ---
 <header class="main-header">
     <nav id="nav" class="main-nav">
 
-        <a href="tattoo-website/#hero" class="brand"></a>
+        <a href={`${base}/#top`} class="brand" aria-label="Zum Seitenanfang"></a>
 
         <ul class="nav-links">
-            <li class="nav-item"><a href="/#about" class="nav-link about">About</a></li>
-            <li class="nav-item"><a href="/#portfolio" class="nav-link portfolio">Portfolio</a></li>
-            <li class="nav-item"><a href="/#faq" class="nav-link faq">FAQ</a></li>
-            <li class="nav-item"><a href="/#contact" class="nav-link contact">Contact</a></li>
+            {navItems.map((item) => (
+                <li class="nav-item">
+                    <a href={`${base}/#${item.id}`} class="nav-link">{item.label}</a>
+                </li>
+            ))}
         </ul>
 
         <button class="burger-menu" aria-label="Menü" aria-expanded="false">
@@ -23,19 +33,22 @@
 <script>
     const burger = document.querySelector(".burger-menu");
     const links = document.querySelector(".nav-links");
-    const header = document.querySelector(".main-header");
 
+    // Menü auf- oder zumachen - an einer Stelle, damit alles zusammenpasst
+    const setMenu = (open: boolean) => {
+        burger?.classList.toggle("menu-open", open);
+        links?.classList.toggle("menu-open", open);
+        burger?.setAttribute("aria-expanded", String(open));
+    };
 
     burger?.addEventListener("click", () => {
-        burger?.classList.toggle("menu-open");
-        links?.classList.toggle("menu-open");
-    })
-
-    window.addEventListener("scroll", () => {
-        if (links?.classList.contains("menu-open")) return;  // Menü offen → nichts tun
-
+        setMenu(!links?.classList.contains("menu-open"));
     });
 
+    // Klick auf einen Link: Menü zu, der Browser springt dann zum Abschnitt
+    links?.addEventListener("click", (event) => {
+        if ((event.target as HTMLElement).closest("a")) setMenu(false);
+    });
 </script>
 
 <style>
@@ -136,6 +149,10 @@
 
     .nav-item {
         margin: var(--space-sm) 0;
+    }
+
+    .nav-link {
+        font-size: var(--text-lg);
     }
 
     .nav-links.menu-open {
