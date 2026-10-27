@@ -1,0 +1,65 @@
+---
+import SectionHeading from "../ui/SectionHeading.astro";
+
+// Platzhalter - später durch Arnes echte Pflegehinweise ersetzen
+const steps = [
+    { title: "Lorem ipsum dolor", text: "Sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore." },
+    { title: "Consetetur sadipscing", text: "Sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum." },
+    { title: "Stet clita kasd", text: "Gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet, consetetur sadipscing elitr." },
+    { title: "Duis autem vel eum", text: "Iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat." },
+    { title: "Nam liber tempor", text: "Cum soluta nobis eleifend option congue nihil imperdiet doming id quod mazim placerat facer possim." },
+];
+---
+
+<section id="aftercare" class="aftercare recessed" aria-labelledby="aftercare-title">
+    <SectionHeading id="aftercare-title">Aftercare</SectionHeading>
+
+    <div class="aftercare_text">
+        <ol class="aftercare_steps">
+            {steps.map((step) => (
+                <li>
+                    <strong>{step.title}</strong>
+                    {step.text}
+                </li>
+            ))}
+        </ol>
+    </div>
+</section>
+
+<style>
+    .aftercare {
+        scroll-margin-top: var(--header-height);
+        padding-block-end: var(--space-3xl);
+    }
+
+    .aftercare_text {
+        max-width: 65ch;
+        margin-inline: auto;
+        padding-inline: var(--space-gutter);
+
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-md);
+        color: var(--color-text-muted);
+    }
+
+    .aftercare_steps {
+        margin: 0;
+        padding-inline-start: 1.25em;
+    }
+
+    .aftercare_steps li + li {
+        margin-block-start: var(--space-md);
+    }
+
+    .aftercare_steps li::marker {
+        color: var(--color-heading);
+        font-weight: var(--weight-bold);
+    }
+
+    .aftercare_steps strong {
+        display: block;
+        color: var(--color-heading);
+        font-weight: var(--weight-bold);
+    }
+</style>
