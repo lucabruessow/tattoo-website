@@ -1,5 +1,7 @@
 ---
-interface Props {
+import type { HTMLAttributes } from "astro/types";
+
+interface Props extends HTMLAttributes<"button"> {
     /** "button" = echter Button.
         "span"  = sieht aus wie ein Button, ist aber keiner.
         Braucht man, wenn er in einem anderen Button oder Link steckt. */
@@ -7,7 +9,8 @@ interface Props {
     variant?: "accent" | "frosted"
 }
 
-const { as = "button", variant = "accent" }: Props = Astro.props;
+// ...attrs = alle übrigen Attribute (z. B. aria-pressed, data-*), landen auf dem <button>
+const { as = "button", variant = "accent", ...attrs }: Props = Astro.props;
 
 const variants = {
     accent: {
@@ -28,7 +31,7 @@ const btnVars = variants[variant]
 {as === "span" ? (
     <span class="btn"><slot>Book on Instagram</slot></span>
 ) : (
-    <button type="button" class="btn"><slot>Book on Instagram</slot></button>
+    <button type="button" class="btn" {...attrs}><slot>Book on Instagram</slot></button>
 )}
 
 <style define:vars= { btnVars }>
@@ -50,5 +53,16 @@ const btnVars = variants[variant]
 
     .btn:hover {
         background-color: var(--btnBgHover);
+    }
+
+    /* Umschalt-Button, der gerade nicht gewählt ist: nur Rahmen */
+    .btn[aria-pressed="false"] {
+        border-color: currentColor;
+        background-color: transparent;
+        color: var(--color-text);
+    }
+
+    .btn[aria-pressed="false"]:hover {
+        background-color: color-mix(in srgb, currentColor 10%, transparent);
     }
 </style>
