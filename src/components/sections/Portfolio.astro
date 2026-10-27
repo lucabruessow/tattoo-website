@@ -2,55 +2,55 @@
 import { Image } from "astro:assets";
 import SectionHeading from "../ui/SectionHeading.astro";
 import Button from "../ui/Button.astro";
-import Lightbox from "../ui/Lightbox.astro";
 import { getCategory } from "../../lib/portfolio";
 
 const categories = [
     getCategory("tierdesigns", "Tierdesigns"),
     getCategory("surrealismus", "Surrealismus"),
+    getCategory("wannados", "Wannados"),
 ];
+
+// Alle Bilder in einer Liste, jedes weiß, zu welcher Kategorie es gehört
+const slides = categories.flatMap((category) =>
+    category.images.map((image) => ({ ...image, category: category.slug })),
+);
+
+const first = categories[0].slug;
 ---
 
 <section id="portfolio" class="portfolio theme-light" aria-labelledby="portfolio-title">
-     <SectionHeading id="portfolio-title">Mach' dir selbst ein Bild</SectionHeading>
+    <SectionHeading id="portfolio-title">Mach' dir selbst ein Bild</SectionHeading>
 
-     <div class="portfolio_inner">
-        <ul class="portfolio_grid">
-            {categories.map((category) => (
-                <li>
-                    <button
-                        type="button"
-                        class="portfolio_card"
-                        data-lightbox-open={`lightbox-${category.slug}`}
-                        aria-haspopup="dialog"
-                    >
-                        <span class="portfolio_cardMedia">
-                            {category.cover && (
-                                <Image
-                                    src={category.cover}
-                                    alt=""
-                                    widths={[480, 800, 1200]}
-                                    sizes="(min-width: 48rem) 50vw, 100vw"
-                                />
-                            )}
-                        </span>
-                        <span class="portfolio_cardBody">
-                            <span class="portfolio_cardTitle">{category.title}</span>
-
-                            <span class="portfolio_cardHint">
-                                <Button as="span">Bilder ansehen</Button>
-                            </span>
-                        </span>
-                    </button>
+    <div class="portfolio_stage">
+        <ul class="portfolio_track" data-track>
+            {slides.map((slide) => (
+                <li class="portfolio_slide" data-slide data-category={slide.category} hidden={slide.category !== first}>
+                    <Image src={slide.src} alt={slide.alt} widths={[640, 960, 1280, 1920]} sizes="100vw" loading="lazy" />
                 </li>
             ))}
         </ul>
     </div>
-</section>
 
-{categories.map((category) => (
-    <Lightbox id={`lightbox-${category.slug}`} title={category.title} images={category.images} />
-))}
+    <div class="portfolio_controls">
+        <button type="button" class="portfolio_arrow" data-prev aria-label="Vorheriges Bild">
+            <svg viewBox="0 0 28 28" aria-hidden="true"><path d="M18 5 9 14l9 9" /></svg>
+        </button>
+
+        <p class="portfolio_counter" data-counter>1 / {categories[0].images.length}</p>
+
+        <button type="button" class="portfolio_arrow" data-next aria-label="Nächstes Bild">
+            <svg viewBox="0 0 28 28" aria-hidden="true"><path d="M10 5l9 9-9 9" /></svg>
+        </button>
+    </div>
+
+    <div class="portfolio_categories">
+        {categories.map((category) => (
+            <Button data-show={category.slug} aria-pressed={category.slug === first}>
+                {category.title}
+            </Button>
+        ))}
+    </div>
+</section>
 
 <style>
     .portfolio {
@@ -58,108 +58,165 @@ const categories = [
         padding-block-end: var(--space-3xl);
     }
 
-    .portfolio_inner {
-        max-width: var(--container-max);
-        margin-inline: auto;
-        padding-inline: var(--space-md);
-    }
-
-    .portfolio_grid {
-        list-style: none;
-        margin: 0;
-        padding: 0;
-        display: grid;
-        grid-template-columns: 1fr;      /* Handy: untereinander */
-        gap: var(--space-md);
-    }
-
-    @media (min-width: 48rem) {
-        .portfolio_grid {
-            grid-template-columns: repeat(2, 1fr);   /* ab Tablet: nebeneinander */
-            gap: var(--space-lg);
-        }
-    }
-
-    .portfolio_card {
+    /* Der Schatten liegt in ::after ÜBER den Bildern. Ein inset-Schatten
+       direkt am Track würde von den Bildern verdeckt. */
+    .portfolio_stage {
         position: relative;
-        display: block;
-        inline-size: 100%;
-        aspect-ratio: 4 / 5;
-        padding: 0;
-        border: 0;
-        border-radius: var(--radius-md);
-        overflow: hidden;
-        cursor: pointer;
-        background-color: var(--color-surface-alt);
-        color: var(--c-neutral-300);
     }
 
-    /* Farbverlauf, damit die Schrift auf jedem Bild lesbar bleibt */
-    .portfolio_card::after {
+    .portfolio_stage::after {
         content: "";
         position: absolute;
         inset: 0;
-        background: linear-gradient(to top, rgb(0 0 0 / 0.75) 0%, rgb(0 0 0 / 0.1) 55%);
+        box-shadow: var(--shadow-recessed);
+        pointer-events: none;   /* Wischen geht durch den Schatten durch */
     }
 
-    .portfolio_cardMedia {
-        position: absolute;
-        inset: 0;
-        display: block;
-        background-color: var(--color-surface-alt);
+    /* Wichtig: Slides bekommen kein display,
+       sonst wirkt das hidden-Attribut nicht mehr */
+
+    .portfolio_track {
+        display: flex;
+        inline-size: 100%;   /* sonst macht max-height (Desktop) über aspect-ratio auch die Breite kleiner */
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        aspect-ratio: 4 / 5;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        scrollbar-width: none;
+    }
+
+    .portfolio_track::-webkit-scrollbar { display: none; }
+
+    .portfolio_slide {
+        flex: 0 0 100%;
+        scroll-snap-align: start;
+        scroll-snap-stop: always;   /* ein Wisch = ein Bild */
     }
 
     /* :global, weil das <img> von der Image-Komponente erzeugt wird */
-    .portfolio_cardMedia :global(img) {
+    .portfolio_slide :global(img) {
         inline-size: 100%;
         block-size: 100%;
         object-fit: cover;
-        object-position: center;
-        transition: scale var(--transition-slow);
     }
 
-    .portfolio_cardBody {
-        position: absolute;
-        inset-inline: 0;
-        inset-block-end: 0;
-        z-index: 1;
-        display: grid;
-        gap: var(--space-xs);
-        padding: var(--space-lg) var(--space-md);
-        text-align: left;
+    .portfolio_controls {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: var(--space-md);
+        margin-block-start: var(--space-lg);
     }
 
-    .portfolio_cardTitle {
-        font-family: var(--font-heading);
-        font-size: var(--text-xl);
+    .portfolio_arrow {
+        padding: var(--space-xs);
+        border: 0;
+        background: none;
+        color: var(--color-heading);
+        cursor: pointer;
+    }
+
+    .portfolio_arrow svg {
+        inline-size: 1.75rem;
+        block-size: 1.75rem;
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 3;
+    }
+
+    /* tabular-nums: alle Ziffern gleich breit, und min-inline-size hält
+       Platz für "10 / 24" frei - so wackeln die Pfeile beim Zählen nicht */
+    .portfolio_counter {
+        min-inline-size: 7ch;
+        text-align: center;
+        font-variant-numeric: tabular-nums;
         font-weight: var(--weight-bold);
-        line-height: var(--leading-tight);
     }
 
-    /* Nur Positionierung - Rundung, Blur und Farbe kommen aus Button.astro */
-    .portfolio_cardHint {
-        justify-self: start;
-        font-size: var(--text-sm);
+    .portfolio_categories {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: var(--space-sm);
+        margin-block-start: var(--space-xl);
+        padding-inline: var(--space-md);
     }
 
-    /* :global, weil .btn aus der Button-Komponente kommt */
-    .portfolio_card:hover .portfolio_cardHint :global(.btn),
-    .portfolio_card:focus-visible .portfolio_cardHint :global(.btn) {
-        background-color: var(--color-accent);
-    }
-
-    .portfolio_card:hover .portfolio_cardMedia :global(img),
-    .portfolio_card:focus-visible .portfolio_cardMedia :global(img) {
-        scale: 1.05;
-    }
-
-    .portfolio_card:focus-visible {
-        outline: 3px solid var(--color-accent);
-        outline-offset: 3px;
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-        .portfolio_cardMedia :global(img) { transition: none; }
-        .portfolio_card:hover .portfolio_cardMedia :global(img) { scale: 1; }
+    @media (min-width: 48rem) {
+        .portfolio_track {
+            aspect-ratio: 16 / 9;
+            max-height: 85svh;
+        }
     }
 </style>
+
+<script>
+    const INTERVAL = 5000;            // so lange steht ein Bild beim Durchlaufen
+    const PAUSE_AFTER_USER = 10000;   // so lange steht es, wenn jemand selbst geblättert hat
+    const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    const track = document.querySelector<HTMLElement>("[data-track]")!;
+    const slides = [...document.querySelectorAll<HTMLElement>("[data-slide]")];
+    const counter = document.querySelector<HTMLElement>("[data-counter]");
+    const categoryButtons = [...document.querySelectorAll<HTMLElement>("[data-show]")];
+    const prev = document.querySelector<HTMLElement>("[data-prev]");
+    const next = document.querySelector<HTMLElement>("[data-next]");
+
+    let index = 0;
+    let timer: number | undefined;
+
+    const goTo = (target: number, behavior: ScrollBehavior = "smooth") => {
+        const count = slides.filter((slide) => !slide.hidden).length;   // nur die gewählte Kategorie
+        index = (target + count) % count;   // nach dem letzten wieder das erste
+        track.scrollTo({ left: index * track.clientWidth, behavior });
+        if (counter) counter.textContent = `${index + 1} / ${count}`;
+    };
+
+    // Nach `delay` ms ein Bild weiter, danach immer im normalen Takt
+    const autoplay = (delay = INTERVAL) => {
+        clearTimeout(timer);
+        if (reduceMotion) return;
+        timer = window.setTimeout(() => {
+            goTo(index + 1);
+            autoplay();
+        }, delay);
+    };
+
+    // Alles, was jemand selbst macht: hinspringen und das Bild 10 s stehen lassen
+    const userGoTo = (target: number) => {
+        goTo(target);
+        autoplay(PAUSE_AFTER_USER);
+    };
+
+    prev?.addEventListener("click", () => userGoTo(index - 1));
+    next?.addEventListener("click", () => userGoTo(index + 1));
+
+    categoryButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+            slides.forEach((slide) => {
+                slide.hidden = slide.dataset.category !== button.dataset.show;
+            });
+            categoryButtons.forEach((b) => b.setAttribute("aria-pressed", String(b === button)));
+            goTo(0, "auto");
+            autoplay(PAUSE_AFTER_USER);
+        });
+    });
+
+    // Gewischt? Wenn das Scrollen vorbei ist und ein anderes Bild da ist -> wie manuell
+    let scrollTimer: number | undefined;
+    track.addEventListener("scroll", () => {
+        clearTimeout(scrollTimer);
+        scrollTimer = window.setTimeout(() => {
+            const current = Math.round(track.scrollLeft / track.clientWidth);
+            if (current !== index) userGoTo(current);
+        }, 100);
+    }, { passive: true });
+
+    // Finger aufs Bild: Timer zurücksetzen, damit er nicht mitten ins Wischen springt
+    track.addEventListener("pointerdown", () => autoplay(PAUSE_AFTER_USER));
+
+    goTo(0, "auto");
+    autoplay();
+</script>

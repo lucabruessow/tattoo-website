@@ -45,6 +45,9 @@
     --color-overlay-dark: color-mix(in srgb, var(--c-neutral-950) 95%, transparent);
     --color-frosted: color-mix(in srgb, var(--c-neutral-100) 20%, transparent);
     --color-shadow: rgb(0 0 0 / 0.15);
+    --shadow-recessed:
+      inset 0  1.25rem 1rem -1rem var(--color-shadow),
+      inset 0 -1.25rem 1rem -1rem var(--color-shadow);
 
     --color-accent: var(--c-accent-500);
     --color-accent-hover: var(--c-accent-400);
