@@ -8,7 +8,6 @@ export interface PortfolioImage {
 export interface PortfolioCategory {
     slug: string;
     title: string;
-    cover: ImageMetadata | undefined;
     images: PortfolioImage[];
 }
 
@@ -46,22 +45,20 @@ export function getCategory(slug: string, title: string): PortfolioCategory {
         .filter(([path]) => path.startsWith(prefix))
         .sort(([a], [b]) => a.localeCompare(b, "de", { numeric: true }));
 
-    const coverEntry = entries.find(([path]) => /\/cover\.[a-z]+$/i.test(path));
-
-    const ordered = coverEntry
-        ? [coverEntry, ...entries.filter((entry) => entry !== coverEntry)]
-        : entries;
-
     return {
         slug,
         title,
-        cover: coverEntry?.[1].default ?? ordered[0]?.[1].default,
-        images: ordered.map(([path, mod]) => {
+        images: entries.map(([path, mod]) => {
             const fileName = fileNameOf(path);
+            const alt = alts[fileName];
+
+            if (!alt) {
+                console.warn(`[portfolio] Kein Alt-Text in ${slug}/alt.json für "${fileName}" – nutze Dateinamen`);
+            }
             return {
                 src: mod.default,
-                alt: alts[fileName] ?? altFromFileName(fileName),
+                alt: alt || altFromFileName(fileName),
             };
         }),
-    }
+    };
 }
